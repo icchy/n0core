@@ -42,6 +42,15 @@ volume_state_type = Enum(
 )
 
 
+NETWORK_STATE_APPLIED = 'applied'
+NETWORK_STATE_HALTED = 'halted'
+
+network_state_type = Enum(
+    NETWORK_STATE_APPLIED, NETWORK_STATE_HALTED,
+    name='network_state_type'
+)
+
+
 UUID = String(36)  # uuid length
 
 class VM(Base):
@@ -67,6 +76,22 @@ class Volume(Base):
     volume_type = Column(String(16), nullable=False)
     size_mb = Column(Integer(), nullable=False)
     url = Column(String(255), nullable=True)
+
+
+class Network(Base):
+    __tablename__ = 'network'
+
+    id = Column(UUID, nullable=False)
+    name = Column(Text(), nullable=False)
+
+    state = Column(network_state_type, nullable=False)
+    network_type = Column(String(16), nullable=False)
+    bridge = Column(String(64), nullable=False)
+
+
+class Subnet(Base):
+    pass
+
 
 
 class Relations(Base):
