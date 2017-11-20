@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../')
 
-from n0core.api.main import app
+from n0core.api.main import main
 
-app.run()
+main()
