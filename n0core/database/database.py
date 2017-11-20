@@ -1,7 +1,8 @@
 from sqlalchemy import (
     create_engine,
     Column,
-    Integer, String, Boolean, DateTime, Enum,
+    Integer, String, DateTime, Enum,
+    Text, TypeDecorator,
 )
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -31,11 +32,23 @@ vm_state_type = Enum(
 )
 
 
+VOLUME_STATE_CLAIMED = 'claimed'
+VOLUME_STATE_RELEASED = 'released'
+VOLUME_STATE_DESTROYED = 'destroyed'
+
+volume_state_type = Enum(
+    VOLUME_STATE_CLAIMED, VOLUME_STATE_RELEASED, VOLUME_STATE_DESTROYED,
+    name='volume_state_type'
+)
+
+
+UUID = String(36)  # uuid length
+
 class VM(Base):
     __tablename__ = 'vm'
 
-    id = Column(String(36), nullable=False)  # uuid
-    name = Column(String(255), nullable=False)
+    id = Column(UUID, nullable=False)
+    name = Column(Text(), nullable=False)
 
     state = Column(vm_state_type, nullable=False)
     arch = Column(String(16), nullable=False)
@@ -44,6 +57,16 @@ class VM(Base):
     vnc_password = Column(Text(), nullable=True)
 
 
+class Volume(Base):
+    __tablename__ = 'volume'
+
+    id = Column(UUID, nullable=False)
+    name = Column(Text(), nullable=False)
+
+    state = Column(volume_state_type, nullable=False)
+    volume_type = Column(String(16), nullable=False)
+    size_mb = Column(Integer(), nullable=False)
+    url = Column(String(255), nullable=True)
 
 
 class Relations(Base):
