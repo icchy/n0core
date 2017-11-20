@@ -29,27 +29,33 @@ def parse_n0m(data):
     msg.ParseFromString(b64decode(data))
 
     msg_type = msg.WhichOneof('message')
-    sub_msg = getattr(msg, msg_type)
-    sub_msg_type = sub_msg.WhichOneof('message')
-
-    return getattr(sub_msg, sub_msg_type)
+    return getattr(msg, msg_type)
 
 
-def build_n0m(request_id, obj, type):
-    # type: (str, Any, str) -> bytes
+def build_n0m(request_id, obj):
+    # type: (str, Any) -> bytes
     """Construct N0stackMessage from submessage
 
     Args:
         request_id: Request ID for N0stackMessage
         obj: submessage payload
-        type: type of N0stackMessage, 'Request' or 'Notification'
     """
     msg = N0stackMessage()
     msg.version = 1
     msg.request_id = request_id
 
-    obj_type = obj.__class__.__name__
-    getattr(getattr(msg, type), obj_type).MergeFrom(obj)
+    # resolve member name by content type
+    name = None
+    names = msg.DESCRIPTOR.fields_by_name
+    for k in names:
+        if names[k].message_type is not None:
+            if names[k].message_type.name == obj.DESCRIPTOR.name:
+                name = k
+                break
+
+    assert name is not None,  \
+            "Unknown content type: {}".format(obj.DESCRIPTOR.name)
+    getattr(msg, name).MergeFrom(obj)
 
     # TODO: Base64 solution should be replaced
     return b64encode(msg.SerializeToString())
@@ -57,7 +63,7 @@ def build_n0m(request_id, obj, type):
 
 class N0MQProducer(pulsar.Producer):  # type: ignore
     def _build_msg(self, content, *args, **kwargs):  # type: ignore
-        content = build_n0m(generate_id(), content, 'Request')
+        content = build_n0m(generate_id(), content)
         return super()._build_msg(content, *args, **kwargs)
 
 
