@@ -1,9 +1,10 @@
 from .n0stack_message_pb2 import N0stackMessage  # noqa
 from .request_pb2 import Request  # noqa
-from .notification_pb2 import Notification  # noqa
-from .resource.vm_pb2 import VM  # noqa
-from .resource.port_pb2 import Port  # noqa
-from .resource.vm_snapshot_pb2 import VMSnapshot  # noqa
-from .resource.ipv4_subnet_pb2 import IPv4Subnet  # noqa
-from .resource.network_pb2 import Network  # noqa
-from .resource.volume_pb2 import Volume  # noqa
+from .spec_pb2 import Spec  # noqa
+from .notify_pb2 import Notify  # noqa
+from .objects.object_pb2 import Relations  # noqa
+from .objects.object_pb2 import Object  # noqa
+from .objects.resources.vm_pb2 import VM  # noqa
+from .objects.resources.port_pb2 import Port  # noqa
+from .objects.resources.network_pb2 import Network  # noqa
+from .objects.resources.volume_pb2 import Volume  # noqa
