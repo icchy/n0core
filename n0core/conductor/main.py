@@ -1,11 +1,5 @@
-try:
-    from n0core.lib.n0mq import N0MQ
-    from n0core.config import config
-except:
-    import sys
-    sys.path.append('../../')
-    from n0core.lib.n0mq import N0MQ
-    from n0core.config import config
+from n0core.lib.n0mq import N0MQ
+from n0core.config import config
 
 
 n0mq = N0MQ(config['pulsar']['service_url'])

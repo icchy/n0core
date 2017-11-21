@@ -1,16 +1,8 @@
 from flask import Flask
-
 from uuid import uuid4 as uuid
 
-try:
-    from n0core.lib.n0mq import N0MQ
-    from n0core.config import config
-except:
-    import sys
-    sys.path.append('../../')
-    from n0core.lib.n0mq import N0MQ
-    from n0core.config import config
-
+from n0core.lib.n0mq import N0MQ
+from n0core.config import config
 from n0core.lib.proto import Request, VM, Volume
 
 
