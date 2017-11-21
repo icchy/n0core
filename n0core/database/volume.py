@@ -5,6 +5,7 @@ from sqlalchemy import (
 )
 
 from .common import *
+from .objectbase import ObjectBase
 
 
 VOLUME_STATE_CLAIMED = 'claimed'
@@ -17,13 +18,10 @@ volume_state_type = Enum(
 )
 
 
-class Volume(Base):
+class Volume(ObjectBase):
     __tablename__ = 'volume'
 
-    id = Column(UUID, nullable=False)
-    name = Column(Text(), nullable=False)
-
     state = Column(volume_state_type, nullable=False)
-    volume_type = Column(String(16), nullable=False)
-    size_mb = Column(Integer(), nullable=False)
-    url = Column(String(255), nullable=True)
+    volume_type = Column(String, nullable=False)
+    size = Column(String, nullable=False)
+    url = Column(String)

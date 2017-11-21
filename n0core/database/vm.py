@@ -1,10 +1,10 @@
 from sqlalchemy import (
     Column,
-    Integer, String, DateTime, Enum,
-    Text,
+    Integer, String, Enum,
 )
 
 from .common import *
+from .objectbase import ObjectBase
 
 
 VM_STATE_STARTED = 'started'
@@ -20,14 +20,11 @@ vm_state_type = Enum(
 )
 
 
-class VM(Base):
+class VM(ObjectBase):
     __tablename__ = 'vm'
 
-    id = Column(UUID, nullable=False)
-    name = Column(Text(), nullable=False)
-
     state = Column(vm_state_type, nullable=False)
-    arch = Column(String(16), nullable=False)
-    vcpus = Column(Integer(), nullable=False)
-    memory_mb = Column(Integer(), nullable=False)
-    vnc_password = Column(Text(), nullable=True)
+    arch = Column(String, nullable=False)
+    vcpus = Column(Integer, nullable=False)
+    memory = Column(String, nullable=False)
+    vnc_password = Column(String, nullable=False)
