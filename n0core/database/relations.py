@@ -1,6 +1,6 @@
 from sqlalchemy import (
     Column,
-    Integer, String,
+    Integer,
 )
 
 from .common import *
