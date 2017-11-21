@@ -6,16 +6,9 @@ from sqlalchemy import (
 )
 from sqlalchemy.ext.declarative import declarative_base
 
-try:
-    from n0core.config import config
-except:
-    import sys
-    sys.path.append('../../')
-    from n0core.config import config
+from n0core.config import config
 
 
 config['db']['uri']
 
 
-class Relations(Base):
-    __tablename__ = 'relations'
